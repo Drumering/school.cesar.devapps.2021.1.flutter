@@ -40,7 +40,7 @@ class ItemsEditor extends StatefulWidget {
 class ItemsState extends State<ItemsEditor> {
   List<Item> items = Repository().getItems();
 
-  _onHandleResetButtonClick() {
+  _handleResetButtonClick() {
     setState(() {
       items = Repository().getItems(invalidateCache: true);
     });
@@ -54,7 +54,7 @@ class ItemsState extends State<ItemsEditor> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ElevatedButton(
-                onPressed: _onHandleResetButtonClick,
+                onPressed: _handleResetButtonClick,
                 child: const Text('Reset all items')),
           ],
         ),
@@ -69,24 +69,42 @@ class ItemsState extends State<ItemsEditor> {
   }
 }
 
-class ItemList extends StatelessWidget {
+class ItemList extends StatefulWidget {
   const ItemList({Key? key, required Item item})
       : _item = item,
         super(key: key);
   final Item _item;
 
   @override
+  State<ItemList> createState() => _ItemListState();
+}
+
+class _ItemListState extends State<ItemList> {
+  _handleCheckboxClick(bool? isChecked) {
+    setState(() {
+      widget._item._isChecked = isChecked ?? false;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Card(
-      color: _item._isChecked ? Colors.grey[800] : null,
+      color: widget._item._isChecked ? Colors.grey[800] : null,
       child: Container(
         height: 100,
-        width: 100,
         padding: const EdgeInsets.all(10),
         child: Center(
-          child: Text(
-            _item._content,
-            style: TextStyle(color: (_item._isChecked ? Colors.white : null)),
+          child: Row(
+            children: [
+              Text(
+                widget._item._content,
+                style: TextStyle(
+                    color: (widget._item._isChecked ? Colors.white : null)),
+              ),
+              Checkbox(
+                  value: widget._item._isChecked,
+                  onChanged: _handleCheckboxClick)
+            ],
           ),
         ),
       ),
@@ -97,9 +115,9 @@ class ItemList extends StatelessWidget {
 class Item {
   final int _id;
   final String _content;
-  final bool _isChecked;
+  bool _isChecked;
 
-  const Item(int id, String content, bool isChecked)
+  Item(int id, String content, [bool isChecked = false])
       : _id = id,
         _content = content,
         _isChecked = isChecked;
