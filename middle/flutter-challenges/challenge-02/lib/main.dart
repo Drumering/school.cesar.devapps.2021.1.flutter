@@ -1,9 +1,16 @@
 import 'package:challenge_ui_plant_app/constants.dart';
 import 'package:challenge_ui_plant_app/screens/home/home_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.removeAfter(splashTimer);
   runApp(const PlantApp());
+}
+
+Future splashTimer(BuildContext? context) async {
+  await Future.delayed(const Duration(seconds: 1));
 }
 
 class PlantApp extends StatelessWidget {
