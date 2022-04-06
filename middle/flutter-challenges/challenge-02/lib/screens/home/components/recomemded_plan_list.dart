@@ -13,23 +13,26 @@ class RecomemdedPlantList extends StatelessWidget {
       scrollDirection: Axis.horizontal,
       child: Row(
         children: [
-          const RecomendedPlanCard(
+          RecomendedPlanCard(
             image: "assets/images/image_1.png",
             title: "Samatha",
             country: "Russia",
             price: 445,
+            onPressed: () => Navigator.pushNamed(context, '/detail'),
           ),
-          const RecomendedPlanCard(
+          RecomendedPlanCard(
             image: "assets/images/image_1.png",
             title: "Samatha",
             country: "Russia",
             price: 445,
+            onPressed: () => Navigator.pushNamed(context, '/detail'),
           ),
-          const RecomendedPlanCard(
+          RecomendedPlanCard(
             image: "assets/images/image_1.png",
             title: "Samatha",
             country: "Russia",
             price: 445,
+            onPressed: () => Navigator.pushNamed(context, '/detail'),
           ),
         ],
       ),

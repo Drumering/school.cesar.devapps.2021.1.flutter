@@ -1,7 +1,4 @@
-import 'dart:ffi';
-
-import 'package:challenge_ui_plant_app/constants.dart';
-import 'package:challenge_ui_plant_app/screens/home/components/recommend_plan_card.dart';
+import 'package:challenge_ui_plant_app/screens/detail/components/plant_detail_body.dart';
 import 'package:flutter/material.dart';
 
 import 'header_with_searchbox.dart';
@@ -15,30 +12,22 @@ class HomeBody extends StatelessWidget {
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
 
-    return 
-    SingleChildScrollView( 
+    return SingleChildScrollView(
       child: Column(
         children: [
-          HeaderWithSearchBox(
-            screenSize: screenSize
-          ),
-
+          HeaderWithSearchBox(screenSize: screenSize),
           TitleWithButtonRow(
             title: "Favorite Plants",
             buttonText: "More",
             onPressed: () {},
           ),
-
           const RecomemdedPlantList(),
-
           TitleWithButtonRow(
             title: "All Plants",
             buttonText: "More",
             onPressed: () {},
           ),
-
           const RecomemdedPlantList(),
-
         ],
       ),
     );
