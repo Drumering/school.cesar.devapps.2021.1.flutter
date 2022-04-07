@@ -31,7 +31,19 @@ class RecomendedPlanCard extends StatelessWidget {
         width: screenSize.width * 0.4,
         child: Column(
           children: [
-            Image.asset(image),
+            Stack(children: [
+              Image.asset(image),
+              Positioned(
+                  bottom: 8,
+                  right: 8,
+                  child: InkWell(
+                    onTap: onPressed,
+                    child: const Icon(
+                      Icons.favorite,
+                      color: kPrimaryColor,
+                    ),
+                  ))
+            ]),
             Container(
               padding: const EdgeInsets.all(kDefaultPadding / 2),
               decoration: BoxDecoration(
