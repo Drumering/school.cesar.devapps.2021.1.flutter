@@ -1,5 +1,8 @@
 import 'package:challenge_ui_plant_app/constants.dart';
+import 'package:challenge_ui_plant_app/data/datasource.dart';
+import 'package:challenge_ui_plant_app/models/plant.dart';
 import 'package:flutter/material.dart';
+import 'package:sqflite/sqlite_api.dart';
 
 class RecomendedPlanCard extends StatelessWidget {
   final String image;
@@ -16,6 +19,8 @@ class RecomendedPlanCard extends StatelessWidget {
     required this.price,
     this.onPressed,
   }) : super(key: key);
+
+  PlantsRepository get plantsRepository => PlantsRepository.datasource;
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +42,22 @@ class RecomendedPlanCard extends StatelessWidget {
                   bottom: 8,
                   right: 8,
                   child: InkWell(
-                    onTap: onPressed,
+                    onTap: () async {
+                      await plantsRepository
+                          .addPlant(Plant(
+                              id: 1,
+                              title: title,
+                              country: country,
+                              image: image,
+                              price: price))
+                          .catchError((e, s) {
+                        if (e is DatabaseException) {
+                          if (e.isUniqueConstraintError()) {
+                            return plantsRepository.deletePlant('1');
+                          }
+                        }
+                      });
+                    },
                     child: const Icon(
                       Icons.favorite,
                       color: kPrimaryColor,
