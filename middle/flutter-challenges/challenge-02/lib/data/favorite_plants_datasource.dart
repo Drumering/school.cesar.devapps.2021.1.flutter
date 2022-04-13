@@ -24,7 +24,7 @@ class FavoritePlantsDataSource implements PlantsDataSource {
 
   _onCreate(db, version) async {
     await db.execute(
-      'CREATE TABLE $plantTable(id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, country TEXT, image TEXT, price INTEGER)',
+      'CREATE TABLE $plantTable(id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, country TEXT, image TEXT, price INTEGER, isFavorite INTEGER)',
     );
   }
 
@@ -60,6 +60,7 @@ class FavoritePlantsDataSource implements PlantsDataSource {
         country: plants[index]['country'],
         image: plants[index]['image'],
         price: plants[index]['price'],
+        isFavorite: plants[index]['isFavorite'] == 0 ? false : true,
       );
     });
   }

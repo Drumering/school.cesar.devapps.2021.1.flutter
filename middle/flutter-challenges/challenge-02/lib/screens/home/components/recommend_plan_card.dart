@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:challenge_ui_plant_app/constants.dart';
 import 'package:challenge_ui_plant_app/models/plant.dart';
 import 'package:flutter/material.dart';
@@ -5,7 +6,7 @@ import 'package:flutter/material.dart';
 class RecomendedPlanCard extends StatelessWidget {
   final Plant plant;
   final Function()? onPressed;
-  final Function()? onFavorited;
+  final Function(Plant plant)? onFavorited;
 
   const RecomendedPlanCard({
     Key? key,
@@ -34,20 +35,23 @@ class RecomendedPlanCard extends StatelessWidget {
                   topLeft: Radius.circular(10),
                   topRight: Radius.circular(10),
                 ),
-                child: Image.network(
-                  plant.image,
+                child: CachedNetworkImage(
+                  imageUrl: plant.image,
                   fit: BoxFit.cover,
                   height: screenSize.height * 0.35,
+                  placeholder: (context, url) => const Center(
+                    child: CircularProgressIndicator(),
+                  ),
                 ),
               ),
               Positioned(
                   bottom: 8,
                   right: 8,
                   child: InkWell(
-                    onTap: onFavorited,
-                    child: const Icon(
+                    onTap: () => onFavorited?.call(plant),
+                    child: Icon(
                       Icons.favorite,
-                      color: kPrimaryColor,
+                      color: plant.isFavorite ? kPrimaryColor : Colors.white,
                     ),
                   ))
             ]),
