@@ -21,13 +21,15 @@ class HomeBody extends StatelessWidget {
             buttonText: "More",
             onPressed: () {},
           ),
-          const RecomemdedPlantList(),
+          const RecomendedPlantList(
+            isFavoriteList: true,
+          ),
           TitleWithButtonRow(
             title: "All Plants",
             buttonText: "More",
             onPressed: () {},
           ),
-          const RecomemdedPlantList(),
+          const RecomendedPlantList(),
         ],
       ),
     );

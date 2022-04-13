@@ -1,26 +1,18 @@
 import 'package:challenge_ui_plant_app/constants.dart';
-import 'package:challenge_ui_plant_app/data/datasource.dart';
 import 'package:challenge_ui_plant_app/models/plant.dart';
 import 'package:flutter/material.dart';
-import 'package:sqflite/sqlite_api.dart';
 
 class RecomendedPlanCard extends StatelessWidget {
-  final String image;
-  final String title;
-  final String country;
-  final int price;
+  final Plant plant;
   final Function()? onPressed;
+  final Function()? onFavorited;
 
   const RecomendedPlanCard({
     Key? key,
-    required this.image,
-    required this.title,
-    required this.country,
-    required this.price,
+    required this.plant,
     this.onPressed,
+    this.onFavorited,
   }) : super(key: key);
-
-  PlantsRepository get plantsRepository => PlantsRepository.datasource;
 
   @override
   Widget build(BuildContext context) {
@@ -37,27 +29,22 @@ class RecomendedPlanCard extends StatelessWidget {
         child: Column(
           children: [
             Stack(children: [
-              Image.asset(image),
+              ClipRRect(
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(10),
+                  topRight: Radius.circular(10),
+                ),
+                child: Image.network(
+                  plant.image,
+                  fit: BoxFit.cover,
+                  height: screenSize.height * 0.35,
+                ),
+              ),
               Positioned(
                   bottom: 8,
                   right: 8,
                   child: InkWell(
-                    onTap: () async {
-                      await plantsRepository
-                          .addPlant(Plant(
-                              id: 1,
-                              title: title,
-                              country: country,
-                              image: image,
-                              price: price))
-                          .catchError((e, s) {
-                        if (e is DatabaseException) {
-                          if (e.isUniqueConstraintError()) {
-                            return plantsRepository.deletePlant('1');
-                          }
-                        }
-                      });
-                    },
+                    onTap: onFavorited,
                     child: const Icon(
                       Icons.favorite,
                       color: kPrimaryColor,
@@ -79,18 +66,26 @@ class RecomendedPlanCard extends StatelessWidget {
                   ]),
               child: Row(
                 children: [
-                  RichText(
-                      text: TextSpan(children: [
-                    TextSpan(
-                        text: "$title\n".toUpperCase(),
-                        style: Theme.of(context).textTheme.button),
-                    TextSpan(
-                        text: country.toUpperCase(),
-                        style: TextStyle(color: kPrimaryColor.withOpacity(0.5)))
-                  ])),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          plant.title.toUpperCase(),
+                          overflow: TextOverflow.ellipsis,
+                          style: Theme.of(context).textTheme.button,
+                        ),
+                        Text(plant.country.toUpperCase(),
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                                color: kPrimaryColor.withOpacity(0.5))),
+                      ],
+                    ),
+                  ),
                   const Spacer(),
                   Text(
-                    "\$$price",
+                    "\$${plant.price}",
                     style: Theme.of(context)
                         .textTheme
                         .button!
