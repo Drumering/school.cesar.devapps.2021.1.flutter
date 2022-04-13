@@ -3,12 +3,12 @@ import 'package:challenge_ui_plant_app/constants.dart';
 import 'package:challenge_ui_plant_app/models/plant.dart';
 import 'package:flutter/material.dart';
 
-class RecomendedPlanCard extends StatelessWidget {
+class RecomendedPlantCard extends StatelessWidget {
   final Plant plant;
   final Function()? onPressed;
   final Function(Plant plant)? onFavorited;
 
-  const RecomendedPlanCard({
+  const RecomendedPlantCard({
     Key? key,
     required this.plant,
     this.onPressed,
@@ -22,7 +22,8 @@ class RecomendedPlanCard extends StatelessWidget {
       onTap: onPressed,
       child: Container(
         margin: const EdgeInsets.only(
-          left: kDefaultPadding,
+          left: kDefaultPadding / 2,
+          right: kDefaultPadding / 2,
           top: kDefaultPadding / 2,
           bottom: kDefaultPadding * 2.5,
         ),

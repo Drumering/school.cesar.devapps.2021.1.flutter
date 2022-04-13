@@ -7,8 +7,18 @@ import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
 
 import 'header_with_searchbox.dart';
-import 'recomended_plan_list.dart';
+import 'recomended_plant_list.dart';
 import 'title_with_button_row.dart';
+
+class HomeBodyArguments {
+  final List<Plant> plants;
+  final Function(Plant plant)? onFavorited;
+
+  const HomeBodyArguments({
+    required this.plants,
+    this.onFavorited,
+  });
+}
 
 class HomeBody extends StatefulWidget {
   const HomeBody({Key? key}) : super(key: key);
@@ -44,7 +54,10 @@ class _HomeBodyState extends State<HomeBody> {
           TitleWithButtonRow(
             title: "Favorite Plants",
             buttonText: "More",
-            onPressed: () {},
+            onPressed: () => Navigator.pushNamed(context, '/favorites',
+                arguments: HomeBodyArguments(
+                    plants: favoritePlants,
+                    onFavorited: (plant) => _onFavoritedPlant(plant))),
           ),
           RecomendedPlantList(
             plants: favoritePlants,
@@ -53,7 +66,8 @@ class _HomeBodyState extends State<HomeBody> {
           TitleWithButtonRow(
             title: "All Plants",
             buttonText: "More",
-            onPressed: () {},
+            onPressed: () => Navigator.pushNamed(context, '/all',
+                arguments: HomeBodyArguments(plants: allPlants)),
           ),
           RecomendedPlantList(
             plants: allPlants,

@@ -2,7 +2,7 @@ import 'package:challenge_ui_plant_app/constants.dart';
 import 'package:challenge_ui_plant_app/models/plant.dart';
 import 'package:flutter/material.dart';
 
-import 'recommend_plan_card.dart';
+import 'recommend_plant_card.dart';
 
 class RecomendedPlantList extends StatelessWidget {
   const RecomendedPlantList({
@@ -25,7 +25,7 @@ class RecomendedPlantList extends StatelessWidget {
         child: Row(
           children: List.generate(
               plants.length,
-              (index) => RecomendedPlanCard(
+              (index) => RecomendedPlantCard(
                     plant: plants[index],
                     onPressed: () => Navigator.pushNamed(context, '/detail'),
                     onFavorited: (plant) => onFavorited?.call(plant),

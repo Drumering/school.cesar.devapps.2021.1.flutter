@@ -1,3 +1,4 @@
+import 'package:challenge_ui_plant_app/constants.dart';
 import 'package:challenge_ui_plant_app/screens/detail/components/plant_detail_body.dart';
 import 'package:flutter/material.dart';
 
@@ -7,7 +8,11 @@ class PlantDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: PlantDetailBody(),
+      appBar: AppBar(
+        backgroundColor: kPrimaryColor,
+        elevation: 0,
+      ),
+      body: const PlantDetailBody(),
     );
   }
 }
