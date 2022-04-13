@@ -4,6 +4,12 @@ import 'package:flutter/material.dart';
 
 import 'recommend_plant_card.dart';
 
+class RecommendedPLantListArguments {
+  RecommendedPLantListArguments({required this.plant});
+
+  final Plant plant;
+}
+
 class RecomendedPlantList extends StatelessWidget {
   const RecomendedPlantList({
     Key? key,
@@ -27,7 +33,9 @@ class RecomendedPlantList extends StatelessWidget {
               plants.length,
               (index) => RecomendedPlantCard(
                     plant: plants[index],
-                    onPressed: () => Navigator.pushNamed(context, '/detail'),
+                    onPressed: () => Navigator.pushNamed(context, '/detail',
+                        arguments: RecommendedPLantListArguments(
+                            plant: plants[index])),
                     onFavorited: (plant) => onFavorited?.call(plant),
                   )),
         ),
