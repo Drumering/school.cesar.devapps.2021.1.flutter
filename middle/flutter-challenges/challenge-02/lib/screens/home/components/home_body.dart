@@ -50,7 +50,8 @@ class _HomeBodyState extends State<HomeBody> {
     return SingleChildScrollView(
       child: Column(
         children: [
-          HeaderWithSearchBox(screenSize: screenSize),
+          HeaderWithSearchBox(
+              screenSize: screenSize, plants: allPlants, result: _onSearch),
           TitleWithButtonRow(
             title: "Favorite Plants",
             buttonText: "More",
@@ -76,6 +77,21 @@ class _HomeBodyState extends State<HomeBody> {
         ],
       ),
     );
+  }
+
+  _onSearch(result) {
+    if (result.isEmpty) {
+      _loadPlants();
+    } else {
+      setState(() {
+        favoritePlants = result
+            .where((Plant element) => element.isFavorite)
+            .toList() as List<Plant>;
+        allPlants = result
+            .where((Plant element) => !element.isFavorite)
+            .toList() as List<Plant>;
+      });
+    }
   }
 
   void _loadPlants() async {

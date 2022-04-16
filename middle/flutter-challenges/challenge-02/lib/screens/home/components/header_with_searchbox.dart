@@ -1,4 +1,5 @@
 import 'package:challenge_ui_plant_app/constants.dart';
+import 'package:challenge_ui_plant_app/models/plant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -6,9 +7,13 @@ class HeaderWithSearchBox extends StatelessWidget {
   const HeaderWithSearchBox({
     Key? key,
     required this.screenSize,
+    required this.plants,
+    this.result,
   }) : super(key: key);
 
   final Size screenSize;
+  final List<Plant> plants;
+  final Function(List<Plant> filtered)? result;
 
   @override
   Widget build(BuildContext context) {
@@ -52,6 +57,18 @@ class HeaderWithSearchBox extends StatelessWidget {
                 )
               ]),
           child: TextField(
+            onChanged: (value) {
+              if (value.isEmpty) {
+                result?.call([]);
+              } else {
+                final filtered = plants
+                    .where((element) => element.title
+                        .toLowerCase()
+                        .contains(value.toLowerCase()))
+                    .toList();
+                result?.call(filtered);
+              }
+            },
             decoration: InputDecoration(
                 hintText: "Search",
                 hintStyle: TextStyle(
