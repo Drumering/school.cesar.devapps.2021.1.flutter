@@ -1,7 +1,7 @@
 import 'package:challenge_ui_plant_app/constants.dart';
-import 'package:challenge_ui_plant_app/screens/home/components/home_body.dart';
-import 'package:challenge_ui_plant_app/screens/home/components/recomended_plant_list.dart';
-import 'package:challenge_ui_plant_app/screens/home/components/recommend_plant_card.dart';
+import 'package:challenge_ui_plant_app/views/home/components/home_body.dart';
+import 'package:challenge_ui_plant_app/views/home/components/recommend_plant_card.dart';
+import 'package:challenge_ui_plant_app/views/home/components/recomended_plant_list.dart';
 import 'package:flutter/material.dart';
 
 class PlantGridScreen extends StatelessWidget {

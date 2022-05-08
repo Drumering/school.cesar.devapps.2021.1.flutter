@@ -1,10 +1,6 @@
-import 'package:challenge_ui_plant_app/data/favorite_plants_datasource.dart';
-import 'package:challenge_ui_plant_app/data/plants_datasource.dart';
-import 'package:challenge_ui_plant_app/interfaces/plants_datasource_interface.dart';
+import 'package:challenge_ui_plant_app/controllers/plants_controller.dart';
 import 'package:challenge_ui_plant_app/models/plant.dart';
-import 'package:challenge_ui_plant_app/repository/plants_repository.dart';
 import 'package:flutter/material.dart';
-import 'package:sqflite/sqflite.dart';
 
 import 'header_with_searchbox.dart';
 import 'recomended_plant_list.dart';
@@ -30,15 +26,14 @@ class HomeBody extends StatefulWidget {
 class _HomeBodyState extends State<HomeBody> {
   late List<Plant> allPlants = [];
   late List<Plant> favoritePlants = [];
-  late PlantsDataSource allPlantsRepository;
-  late PlantsDataSource favoritePlantsRepository;
+
+  late PlantsController plantsController;
 
   @override
   void initState() {
     super.initState();
 
-    allPlantsRepository = PlantsRepository(AllPlantsDataSource());
-    favoritePlantsRepository = PlantsRepository(FavoritePlantsDataSource());
+    plantsController = PlantsController();
 
     _loadPlants();
   }
@@ -79,24 +74,21 @@ class _HomeBodyState extends State<HomeBody> {
     );
   }
 
-  _onSearch(result) {
+  _onSearch(List<Plant> result) {
     if (result.isEmpty) {
       _loadPlants();
     } else {
       setState(() {
-        favoritePlants = result
-            .where((Plant element) => element.isFavorite)
-            .toList() as List<Plant>;
-        allPlants = result
-            .where((Plant element) => !element.isFavorite)
-            .toList() as List<Plant>;
+        favoritePlants = plantsController.getPlantsByCategory(result);
+        allPlants =
+            plantsController.getPlantsByCategory(result, isFavorite: false);
       });
     }
   }
 
   void _loadPlants() async {
-    final allPlants = await allPlantsRepository.getPlants();
-    final favoritePlants = await favoritePlantsRepository.getPlants();
+    final allPlants = await plantsController.getAllPlants();
+    final favoritePlants = await plantsController.getFavoritePlants();
     setState(() {
       this.allPlants = allPlants;
       this.favoritePlants = favoritePlants;
@@ -105,17 +97,6 @@ class _HomeBodyState extends State<HomeBody> {
 
   void _onFavoritedPlant(Plant plant) async {
     plant.isFavorite = !plant.isFavorite;
-    await favoritePlantsRepository.addPlant(plant).then((_) => {_loadPlants()},
-        onError: (e, s) => {
-              if (e is DatabaseException)
-                {
-                  if (e.isUniqueConstraintError())
-                    {
-                      favoritePlantsRepository
-                          .deletePlant(plant.id.toString())
-                          .then((_) => {_loadPlants()})
-                    }
-                }
-            });
+    await plantsController.addFavoritePlant(plant, () => _loadPlants());
   }
 }

@@ -1,4 +1,5 @@
 import 'package:challenge_ui_plant_app/constants.dart';
+import 'package:challenge_ui_plant_app/controllers/plants_controller.dart';
 import 'package:challenge_ui_plant_app/models/plant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -17,6 +18,7 @@ class HeaderWithSearchBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final PlantsController plantsController = PlantsController();
     return Column(
       children: [
         Container(
@@ -61,11 +63,8 @@ class HeaderWithSearchBox extends StatelessWidget {
               if (value.isEmpty) {
                 result?.call([]);
               } else {
-                final filtered = plants
-                    .where((element) => element.title
-                        .toLowerCase()
-                        .contains(value.toLowerCase()))
-                    .toList();
+                final filtered =
+                    plantsController.getPlantsBySearch(value, plants);
                 result?.call(filtered);
               }
             },

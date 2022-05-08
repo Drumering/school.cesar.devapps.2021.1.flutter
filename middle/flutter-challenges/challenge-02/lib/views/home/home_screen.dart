@@ -1,5 +1,5 @@
 import 'package:challenge_ui_plant_app/constants.dart';
-import 'package:challenge_ui_plant_app/screens/home/components/home_body.dart';
+import 'package:challenge_ui_plant_app/views/home/components/home_body.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 

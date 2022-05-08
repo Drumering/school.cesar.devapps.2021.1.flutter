@@ -1,7 +1,7 @@
 import 'package:challenge_ui_plant_app/constants.dart';
-import 'package:challenge_ui_plant_app/screens/detail/plant_detail_screen.dart';
-import 'package:challenge_ui_plant_app/screens/grid/plant_grid_screen.dart';
-import 'package:challenge_ui_plant_app/screens/home/home_screen.dart';
+import 'package:challenge_ui_plant_app/views/detail/plant_detail_screen.dart';
+import 'package:challenge_ui_plant_app/views/grid/plant_grid_screen.dart';
+import 'package:challenge_ui_plant_app/views/home/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 
