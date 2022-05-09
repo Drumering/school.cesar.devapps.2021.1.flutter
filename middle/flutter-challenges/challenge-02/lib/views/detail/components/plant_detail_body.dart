@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:challenge_ui_plant_app/constants.dart';
 import 'package:challenge_ui_plant_app/views/home/components/recomended_plant_list.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class PlantDetailBody extends StatelessWidget {
   const PlantDetailBody({Key? key}) : super(key: key);
@@ -73,16 +74,16 @@ class PlantDetailBody extends StatelessWidget {
               width: size.width / 2,
               height: 84,
               child: ElevatedButton(
-                child: const Text("Buy Now"),
+                child: Text(AppLocalizations.of(context)!.buyNow),
                 style: ElevatedButton.styleFrom(
                     primary: kPrimaryColor,
                     shape: const RoundedRectangleBorder(
                         borderRadius:
                             BorderRadius.only(topRight: Radius.circular(20)))),
                 onPressed: () {
-                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                    content: Text("Coming soon"),
-                    duration: Duration(seconds: 1),
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text(AppLocalizations.of(context)!.comingSoon),
+                    duration: const Duration(seconds: 1),
                   ));
                 },
               ),

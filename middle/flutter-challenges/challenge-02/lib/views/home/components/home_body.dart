@@ -1,6 +1,7 @@
 import 'package:challenge_ui_plant_app/controllers/plants_controller.dart';
 import 'package:challenge_ui_plant_app/models/plant.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'header_with_searchbox.dart';
 import 'recomended_plant_list.dart';
@@ -48,8 +49,8 @@ class _HomeBodyState extends State<HomeBody> {
           HeaderWithSearchBox(
               screenSize: screenSize, plants: allPlants, result: _onSearch),
           TitleWithButtonRow(
-            title: "Favorite Plants",
-            buttonText: "More",
+            title: AppLocalizations.of(context)!.favoritePlants,
+            buttonText: AppLocalizations.of(context)!.more,
             onPressed: () => Navigator.pushNamed(context, '/favorites',
                 arguments: HomeBodyArguments(
                     plants: favoritePlants,
@@ -60,8 +61,8 @@ class _HomeBodyState extends State<HomeBody> {
             onFavorited: (plant) => _onFavoritedPlant(plant),
           ),
           TitleWithButtonRow(
-            title: "All Plants",
-            buttonText: "More",
+            title: AppLocalizations.of(context)!.allPlants,
+            buttonText: AppLocalizations.of(context)!.more,
             onPressed: () => Navigator.pushNamed(context, '/all',
                 arguments: HomeBodyArguments(plants: allPlants)),
           ),

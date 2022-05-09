@@ -4,6 +4,7 @@ import 'package:challenge_ui_plant_app/views/grid/plant_grid_screen.dart';
 import 'package:challenge_ui_plant_app/views/home/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,7 +23,9 @@ class PlantApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Plant App',
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
+      title: AppLocalizations.of(context)?.plantApp ?? 'Plant App',
       theme: ThemeData(
         primaryColor: kPrimaryColor,
         scaffoldBackgroundColor: kBackgroundColor,

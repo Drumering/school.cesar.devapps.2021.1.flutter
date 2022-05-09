@@ -3,6 +3,7 @@ import 'package:challenge_ui_plant_app/controllers/plants_controller.dart';
 import 'package:challenge_ui_plant_app/models/plant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class HeaderWithSearchBox extends StatelessWidget {
   const HeaderWithSearchBox({
@@ -36,7 +37,7 @@ class HeaderWithSearchBox extends StatelessWidget {
           child: Row(
             children: [
               Text(
-                "Plant App",
+                AppLocalizations.of(context)!.plantApp,
                 style: Theme.of(context)
                     .textTheme
                     .headline5!
@@ -69,7 +70,7 @@ class HeaderWithSearchBox extends StatelessWidget {
               }
             },
             decoration: InputDecoration(
-                hintText: "Search",
+                hintText: AppLocalizations.of(context)?.search,
                 hintStyle: TextStyle(
                   color: kPrimaryColor.withOpacity(0.5),
                 ),
