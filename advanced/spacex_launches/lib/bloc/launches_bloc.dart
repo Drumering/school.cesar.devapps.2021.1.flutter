@@ -11,13 +11,13 @@ class LaunchesBloc {
 
   LaunchesBloc(this.datasource) {
     repository = LaunchesRepository(datasource);
-    _launchesController.add(launches);
+    _launchesController.add(_launches);
   }
 
   final _launchesController =
       StreamController<Future<List<Launch>>>.broadcast();
 
-  Future<List<Launch>> get launches async {
+  Future<List<Launch>> get _launches async {
     return await repository.getLaunches();
   }
 
@@ -30,8 +30,8 @@ class LaunchesBloc {
   }
 
   Future<List<Launch>> getLaunches() async {
-    _launchesController.sink.add(launches);
-    return await launches;
+    _launchesController.sink.add(_launches);
+    return await _launches;
   }
 
   void dispose() {

@@ -22,6 +22,10 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     launchesBloc = LaunchesBloc(initialData);
     loadLaunches();
+  }
+
+  void loadLaunches() async {
+    launches = await launchesBloc.getLaunches();
     launchesBloc.launchesStream.listen((launches) async {
       setState(() {
         this.launches = launches as List<Launch>;
@@ -29,39 +33,44 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  void loadLaunches() async {
-    launches = await launchesBloc.launches;
-  }
-
   @override
   Widget build(BuildContext context) {
     return StreamProvider(
       create: (_) => launchesBloc.launchesStream,
-      initialData: launchesBloc.launches,
+      initialData: launchesBloc.getLaunches(),
       child: Scaffold(
-        backgroundColor: Colors.white,
-        appBar: AppBar(
-          centerTitle: true,
-          title: Image.asset(
-            'lib/assets/spacex_logo.png',
-            width: MediaQuery.of(context).size.width * 0.5,
-            height: MediaQuery.of(context).size.height * 0.05,
-          ),
           backgroundColor: Colors.white,
-          elevation: 0,
-        ),
-        body: Center(
-          child: Column(
-            children: List.generate(
-                launches.length,
-                (index) => ListTile(
-                      title: Text(launches[index].missionName),
-                      subtitle: Text('launches[index].details'),
-                      leading: Image.asset('lib/assets/shuttle.png'),
-                    )),
+          appBar: AppBar(
+            centerTitle: true,
+            title: Image.asset(
+              'lib/assets/spacex_logo.png',
+              width: MediaQuery.of(context).size.width * 0.5,
+              height: MediaQuery.of(context).size.height * 0.05,
+            ),
+            backgroundColor: Colors.white,
+            elevation: 0,
           ),
-        ),
-      ),
+          body: launches.isEmpty
+              ? const Center(
+                  child: CircularProgressIndicator(),
+                )
+              : Center(
+                  child: SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.7,
+                    child: ListView.builder(
+                      itemCount: launches.length,
+                      itemBuilder: (ctx, index) => Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ListTile(
+                          title: Text(launches[index].missionName),
+                          subtitle: Text(launches[index].details),
+                          leading: Image.asset('lib/assets/shuttle.png'),
+                          // leading: Image.network(launches[index].links.missionPatch),
+                        ),
+                      ),
+                    ),
+                  ),
+                )),
     );
   }
 }
