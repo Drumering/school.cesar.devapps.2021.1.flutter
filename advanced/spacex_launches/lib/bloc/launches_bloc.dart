@@ -11,17 +11,15 @@ class LaunchesBloc {
 
   LaunchesBloc(this.datasource) {
     repository = LaunchesRepository(datasource);
-    _launchesController.add(_launches);
   }
 
-  final _launchesController =
-      StreamController<Future<List<Launch>>>.broadcast();
+  final _launchesController = StreamController<List<Launch>>.broadcast();
 
-  Future<List<Launch>> get _launches async {
+  Stream<List<Launch>> get launchesStream => _launchesController.stream;
+
+  Future<List<Launch>> _launches() async {
     return await repository.getLaunches();
   }
-
-  Stream<Future<List<Launch>>> get launchesStream => _launchesController.stream;
 
   static List<Launch> parseLaunches(String responseBody) {
     final parsed = json.decode(responseBody).cast<Map<String, dynamic>>();
@@ -29,9 +27,10 @@ class LaunchesBloc {
     return parsed.map<Launch>((json) => Launch.fromJson(json)).toList();
   }
 
-  Future<List<Launch>> getLaunches() async {
-    _launchesController.sink.add(_launches);
-    return await _launches;
+  onEvent(String event) {
+    if (event == 'refresh' || event == 'init') {
+      _launches().then((launches) => _launchesController.add(launches));
+    }
   }
 
   void dispose() {

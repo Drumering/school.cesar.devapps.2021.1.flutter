@@ -13,31 +13,26 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final initialData = LaunchesRepository(HttpLaunchesDatasource());
-  late LaunchesBloc launchesBloc;
-  late List<Launch> launches = [];
+  final LaunchesBloc launchesBloc =
+      LaunchesBloc(LaunchesRepository(HttpLaunchesDatasource()));
 
   @override
   void initState() {
     super.initState();
-    launchesBloc = LaunchesBloc(initialData);
-    loadLaunches();
+    launchesBloc.onEvent('init');
   }
 
-  void loadLaunches() async {
-    launches = await launchesBloc.getLaunches();
-    launchesBloc.launchesStream.listen((launches) async {
-      setState(() {
-        this.launches = launches as List<Launch>;
-      });
-    });
+  @override
+  void dispose() {
+    super.dispose();
+    launchesBloc.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return StreamProvider(
       create: (_) => launchesBloc.launchesStream,
-      initialData: launchesBloc.getLaunches(),
+      initialData: const <Launch>[],
       child: Scaffold(
           backgroundColor: Colors.white,
           appBar: AppBar(
@@ -50,27 +45,29 @@ class _HomePageState extends State<HomePage> {
             backgroundColor: Colors.white,
             elevation: 0,
           ),
-          body: launches.isEmpty
-              ? const Center(
-                  child: CircularProgressIndicator(),
-                )
-              : Center(
-                  child: SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.7,
-                    child: ListView.builder(
-                      itemCount: launches.length,
-                      itemBuilder: (ctx, index) => Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: ListTile(
-                          title: Text(launches[index].missionName),
-                          subtitle: Text(launches[index].details),
-                          leading: Image.asset('lib/assets/shuttle.png'),
-                          // leading: Image.network(launches[index].links.missionPatch),
+          body: Consumer<List<Launch>>(
+            builder: (ctx, launches, child) => launches.isEmpty
+                ? const Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : Center(
+                    child: SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.7,
+                      child: ListView.builder(
+                        itemCount: launches.length,
+                        itemBuilder: (ctx, index) => Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: ListTile(
+                            title: Text(launches[index].missionName),
+                            subtitle: Text(launches[index].details),
+                            leading: Image.asset('lib/assets/shuttle.png'),
+                            // leading: Image.network(launches[index].links.missionPatch),
+                          ),
                         ),
                       ),
                     ),
                   ),
-                )),
+          )),
     );
   }
 }
