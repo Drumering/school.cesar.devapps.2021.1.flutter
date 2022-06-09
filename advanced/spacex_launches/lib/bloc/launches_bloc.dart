@@ -28,9 +28,37 @@ class LaunchesBloc {
   }
 
   onEvent(String event) {
-    if (event == 'refresh' || event == 'init') {
-      _launches().then((launches) => _launchesController.add(launches));
+    switch (event) {
+      case 'init':
+        _launches().then((launches) => _launchesController.sink.add(launches));
+        break;
+      case 'refresh':
+        _launchesController.sink.add([]);
+        _launches().then((launches) => _launchesController.sink.add(launches));
+        break;
+      case 'filter':
+        onFilter();
+        break;
+      default:
+        print('Event $event not found');
     }
+  }
+
+  onFilter() {
+    List<Launch> filteredLaunches = [];
+    // launchesStream.listen((launches) {
+    //   filteredLaunches = launches
+    //       .where((launch) =>
+    //           launch.launchYear.toString().contains(repository.filter))
+    //       .toList();
+    //   _launchesController.sink.add(filteredLaunches);
+    // });
+    launchesStream.listen((launches) {
+      filteredLaunches = launches
+          .where((launch) => launch.missionName.toString() == 'FalconSat')
+          .toList();
+      _launchesController.sink.add(filteredLaunches);
+    });
   }
 
   void dispose() {

@@ -16,6 +16,8 @@ class _HomePageState extends State<HomePage> {
   final LaunchesBloc launchesBloc =
       LaunchesBloc(LaunchesRepository(HttpLaunchesDatasource()));
 
+  bool isSelectected = false;
+
   @override
   void initState() {
     super.initState();
@@ -45,28 +47,46 @@ class _HomePageState extends State<HomePage> {
             backgroundColor: Colors.white,
             elevation: 0,
           ),
-          body: Consumer<List<Launch>>(
-            builder: (ctx, launches, child) => launches.isEmpty
-                ? const Center(
-                    child: CircularProgressIndicator(),
-                  )
-                : Center(
-                    child: SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.7,
-                      child: ListView.builder(
-                        itemCount: launches.length,
-                        itemBuilder: (ctx, index) => Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: ListTile(
-                            title: Text(launches[index].missionName),
-                            subtitle: Text(launches[index].details),
-                            leading: Image.asset('lib/assets/shuttle.png'),
-                            // leading: Image.network(launches[index].links.missionPatch),
+          body: Column(
+            children: [
+              FilterChip(
+                label: const Text("year"),
+                selected: isSelectected,
+                selectedColor: Colors.greenAccent,
+                onSelected: (bool value) {
+                  setState(() {
+                    isSelectected = value;
+                    launchesBloc.onEvent('filter');
+                  });
+                },
+              ),
+              Expanded(
+                child: Consumer<List<Launch>>(
+                  builder: (ctx, launches, child) => launches.isEmpty
+                      ? const Center(
+                          child: CircularProgressIndicator(),
+                        )
+                      : Center(
+                          child: SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.7,
+                            child: ListView.builder(
+                              itemCount: launches.length,
+                              itemBuilder: (ctx, index) => Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: ListTile(
+                                  title: Text(launches[index].missionName),
+                                  subtitle: Text(launches[index].details),
+                                  leading:
+                                      Image.asset('lib/assets/shuttle.png'),
+                                  // leading: Image.network(launches[index].links.missionPatch),
+                                ),
+                              ),
+                            ),
                           ),
                         ),
-                      ),
-                    ),
-                  ),
+                ),
+              ),
+            ],
           )),
     );
   }
