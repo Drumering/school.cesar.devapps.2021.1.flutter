@@ -21,7 +21,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    launchesBloc.onEvent('init');
+    launchesBloc.onEvent(event: 'init');
   }
 
   @override
@@ -50,13 +50,18 @@ class _HomePageState extends State<HomePage> {
           body: Column(
             children: [
               FilterChip(
-                label: const Text("year"),
+                label: const Text("Successfully Launches"),
                 selected: isSelectected,
                 selectedColor: Colors.greenAccent,
                 onSelected: (bool value) {
                   setState(() {
                     isSelectected = value;
-                    launchesBloc.onEvent('filter');
+                    if (value) {
+                      launchesBloc.onEvent(
+                          event: 'filter', filter: 'bySuccess');
+                    } else {
+                      launchesBloc.onEvent(event: 'refresh');
+                    }
                   });
                 },
               ),

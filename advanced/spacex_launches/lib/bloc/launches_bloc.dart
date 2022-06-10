@@ -13,6 +13,8 @@ class LaunchesBloc {
     repository = LaunchesRepository(datasource);
   }
 
+  List<Launch> launches = [];
+
   final _launchesController = StreamController<List<Launch>>.broadcast();
 
   Stream<List<Launch>> get launchesStream => _launchesController.stream;
@@ -27,38 +29,47 @@ class LaunchesBloc {
     return parsed.map<Launch>((json) => Launch.fromJson(json)).toList();
   }
 
-  onEvent(String event) {
+  onEvent({String? event, String? filter}) {
     switch (event) {
       case 'init':
-        _launches().then((launches) => _launchesController.sink.add(launches));
+        onInit();
         break;
       case 'refresh':
-        _launchesController.sink.add([]);
-        _launches().then((launches) => _launchesController.sink.add(launches));
+        onRefresh();
         break;
       case 'filter':
-        onFilter();
+        onFilter(filter);
         break;
       default:
         print('Event $event not found');
     }
   }
 
-  onFilter() {
-    List<Launch> filteredLaunches = [];
-    // launchesStream.listen((launches) {
-    //   filteredLaunches = launches
-    //       .where((launch) =>
-    //           launch.launchYear.toString().contains(repository.filter))
-    //       .toList();
-    //   _launchesController.sink.add(filteredLaunches);
-    // });
-    launchesStream.listen((launches) {
-      filteredLaunches = launches
-          .where((launch) => launch.missionName.toString() == 'FalconSat')
-          .toList();
-      _launchesController.sink.add(filteredLaunches);
+  void onRefresh() {
+    _launchesController.sink.add([]);
+    _launches().then((launches) => _launchesController.sink.add(launches));
+  }
+
+  void onInit() {
+    _launches().then((launches) => _launchesController.sink.add(launches));
+    launchesStream.listen((event) {
+      launches = event;
     });
+  }
+
+  onFilter(String? filter) {
+    switch (filter) {
+      case 'bySuccess':
+        _launchesController.sink
+            .add(launches.where((launch) => launch.launchSuccess).toList());
+        break;
+      case 'byYear':
+        _launchesController.sink.add(
+            launches.where((launch) => launch.launchYear == '2006').toList());
+        break;
+      default:
+        _launchesController.sink.add(launches);
+    }
   }
 
   void dispose() {
