@@ -60,7 +60,7 @@ class _HomePageState extends State<HomePage> {
                       launchesBloc.onEvent(
                           event: 'filter', filter: 'bySuccess');
                     } else {
-                      launchesBloc.onEvent(event: 'refresh');
+                      launchesBloc.onEvent(event: 'filter');
                     }
                   });
                 },

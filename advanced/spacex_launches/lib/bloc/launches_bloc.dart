@@ -58,14 +58,17 @@ class LaunchesBloc {
   }
 
   onFilter(String? filter) {
+    List<Launch> filteredLaunches = [];
     switch (filter) {
       case 'bySuccess':
-        _launchesController.sink
-            .add(launches.where((launch) => launch.launchSuccess).toList());
+        filteredLaunches =
+            launches.where((launch) => launch.launchSuccess).toList();
+        _launchesController.sink.add(filteredLaunches);
         break;
       case 'byYear':
-        _launchesController.sink.add(
-            launches.where((launch) => launch.launchYear == '2006').toList());
+        filteredLaunches =
+            launches.where((launch) => launch.launchYear == '2006').toList();
+        _launchesController.sink.add(filteredLaunches);
         break;
       default:
         _launchesController.sink.add(launches);
