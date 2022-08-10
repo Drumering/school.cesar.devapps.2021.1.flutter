@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:spacex_launches/models/launches.dart';
 import 'package:spacex_launches/views/home_page.dart';
 
 void main() {
-  runApp(const App());
+  runApp(
+    MultiProvider(providers: [
+      ChangeNotifierProvider(create: (context) => Launches()),
+    ], child: const App()),
+  );
 }
 
 class App extends StatelessWidget {

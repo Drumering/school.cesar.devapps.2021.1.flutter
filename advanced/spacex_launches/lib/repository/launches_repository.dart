@@ -4,6 +4,7 @@ import 'package:spacex_launches/models/launch.dart';
 
 class LaunchesRepository implements LaunchesInterface {
   final LaunchesInterface datasource;
+
   LaunchesRepository(this.datasource);
 
   @override

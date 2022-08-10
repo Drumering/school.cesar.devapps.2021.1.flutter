@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:spacex_launches/abstracts/launches_interface.dart';
-import 'package:spacex_launches/bloc/launches_bloc.dart';
+import 'package:spacex_launches/bloc/launches/launch_bloc.dart';
 import 'package:spacex_launches/models/spacex_info.dart';
 import 'package:spacex_launches/models/launch.dart';
 import 'package:http/http.dart' as http;
